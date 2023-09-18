@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
-class MeetingRoom(models.Model):
+class Room(models.Model):
     STATUS_CHOICES = (
         ('empty', 'empty'),
         ('full', 'full'),
