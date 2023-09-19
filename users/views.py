@@ -2,12 +2,17 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserRegistrationSerializer,UserInformationSerializer
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from .serializers import (
+    UserRegistrationSerializer,
+    UserInformationSerializer,
+    ChangePasswordSerializer
+)
 from rest_framework.permissions import IsAuthenticated
 from .utils import send_confirmation_email
 from rest_framework_simplejwt.tokens import AccessToken
 from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class UserRegistrationView(CreateAPIView):
     serializer_class = UserRegistrationSerializer
@@ -22,7 +27,6 @@ class UserRegistrationView(CreateAPIView):
 
 
 class UserProfileView(APIView):
-    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -33,7 +37,7 @@ class UserProfileView(APIView):
     
 
 class SendEmailConfirmationTokenAPIView(APIView):
-    def post(self, request, format=None):
+    def post(self, request):
         user = request.user  
         send_confirmation_email(user)
 
@@ -42,12 +46,12 @@ class SendEmailConfirmationTokenAPIView(APIView):
 
 class ConfirmEmailView(APIView):
 
-    def get(self, request, format=None):
+    def get(self, request):
         token = request.GET.get('token', None)
         if token:
             try:
                 access_token = AccessToken(token)
-                user = get_user_model().objects.get(id=access_token['user_id'])
+                user = User.objects.get(id=access_token['user_id'])
                 user.is_email_confirmed = True
                 user.save()
                 return Response({'message': 'Email has been successfully confirmed.'}, status=status.HTTP_200_OK)
@@ -55,3 +59,30 @@ class ConfirmEmailView(APIView):
                 return Response({'message': 'Invalid confirmation token.'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'message': 'Token is missing.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        serializer = ChangePasswordSerializer(data=request.data)
+
+        if serializer.is_valid():
+            old_password = serializer.validated_data['old_password']
+            new_password = serializer.validated_data['new_password']
+            confirm_new_password = serializer.validated_data['confirm_new_password']
+
+            user = request.user
+
+            if not user.check_password(old_password):
+                return Response({'incorrect_password_error': 'Old password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            if new_password != confirm_new_password:
+                return Response({'not_match_error': 'New passwords do not match.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            user.set_password(new_password)
+            user.save()
+
+            return Response({'message': 'Password changed successfully.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
