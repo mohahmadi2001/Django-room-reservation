@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 
-class CustomRegistrationSerializer(serializers.ModelSerializer):
+class UserRegistrationSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
     first_name = serializers.CharField(required=True)
@@ -58,3 +58,9 @@ class CustomRegistrationSerializer(serializers.ModelSerializer):
         user.save()
         
         return user
+    
+class UserInformationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id','username','first_name','last_name','email')
+        
