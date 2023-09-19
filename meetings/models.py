@@ -23,7 +23,8 @@ class Room(BaseModel):
         return self.name
     
     #create Room
-    def create_room(name, status="empty", capacity=0):
+    @classmethod
+    def create_room(cls, name, status="empty", capacity=0):
         """
         Create a new room with the given name, status, and capacity.
 
@@ -35,42 +36,46 @@ class Room(BaseModel):
         Returns:
             Room: The newly created room object.
         """   
-        room = Room(name=name, status=status, capacity=capacity)
+        room = cls(name=name, status=status, capacity=capacity)
         room.save()
         return room
 
     #get all room
-    def get_all_rooms():
+    @classmethod
+    def get_all_rooms(cls):
         """
         Retrieve a list of all available rooms.
 
         Returns:
             QuerySet: A queryset containing all room objects.
         """
-        return Room.objects.all()
+        return cls.objects.all()
     
     #get empty room
-    def get_empty_rooms():
+    @classmethod
+    def get_empty_rooms(cls):
         """
         Retrieve a list of all empty rooms.
 
         Returns:
             QuerySet: A queryset containing all empty room objects.
         """
-        return Room.objects.filter(status="empty")
+        return cls.objects.filter(status="empty")
     
     #get full room
-    def get_full_rooms():
+    @classmethod
+    def get_full_rooms(cls):
         """
         Retrieve a list of all full rooms.
 
         Returns:
             QuerySet: A queryset containing all full room objects.
         """
-        return Room.objects.filter(status="full")
+        return cls.objects.filter(status="full")
 
     #get room by capacity
-    def get_rooms_by_capacity(capacity):
+    @classmethod
+    def get_rooms_by_capacity(cls, capacity):
         """
         Retrieve a list of rooms with a capacity greater than or equal to the specified value.
 
@@ -80,10 +85,11 @@ class Room(BaseModel):
         Returns:
             QuerySet: A queryset containing room objects that meet the capacity criteria.
         """   
-        return Room.objects.filter(capacity__gte=capacity)
+        return cls.objects.filter(capacity__gte=capacity)
 
     #update room
-    def update_room(room_id, name=None, status=None, capacity=None):
+    @classmethod
+    def update_room(cls, room_id, name=None, status=None, capacity=None):
         """
         Update the attributes of a room.
 
@@ -96,7 +102,7 @@ class Room(BaseModel):
         Returns:
             Room: The updated room object.
         """
-        room = Room.objects.get(id=room_id)
+        room = cls.objects.get(id=room_id)
         if name:
             room.name = name
         if status:
@@ -122,7 +128,8 @@ class RoomSlot(models.Model):
         return f"{self.room.name} - {self.start_time} to {self.end_time}"
 
     #create room slot
-    def create_room_slot(room, start_time, end_time, is_empty=True):
+    @classmethod
+    def create_room_slot(cls, room, start_time, end_time, is_empty=True):
         """
         Create a new room slot with the given room, start time, end time, and empty status.
 
@@ -135,12 +142,13 @@ class RoomSlot(models.Model):
         Returns:
             RoomSlot: The newly created room slot object.
         """
-        room_slot = RoomSlot(room=room, start_time=start_time, end_time=end_time, is_empty=is_empty)
+        room_slot = cls(room=room, start_time=start_time, end_time=end_time, is_empty=is_empty)
         room_slot.save()
         return room_slot
     
     #get room status in time range
-    def get_room_status_in_time_range(room, start_time, end_time):
+    @classmethod
+    def get_room_status_in_time_range(cls, room, start_time, end_time):
         """
         Retrieve the status of a room within a specified time range.
 
@@ -152,8 +160,9 @@ class RoomSlot(models.Model):
         Returns:
             bool: True if the room is empty within the specified time range, False otherwise.
         """
-        room_slot = RoomSlot.objects.get(room=room, start_time=start_time, end_time=end_time)
+        room_slot = cls.objects.get(room=room, start_time=start_time, end_time=end_time)
         return room_slot.is_empty
+        
 
     
         
