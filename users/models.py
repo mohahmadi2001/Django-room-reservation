@@ -12,5 +12,3 @@ class CustomUser(AbstractUser):
         verbose_name_plural = _("CustomUsers")
         
     
-class EmailConfirmationToken(BaseModel):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

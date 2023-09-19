@@ -22,7 +22,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from users.views import UserRegistrationView,UserProfileView
+from users.views import UserRegistrationView,UserProfileView,SendEmailConfirmationTokenAPIView,ConfirmEmailView
 
 
 urlpatterns = [
@@ -33,6 +33,8 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', UserRegistrationView.as_view(), name='user-registration'),
     path('profile/', UserProfileView.as_view(), name='user-profile'),
+    path('send-confirmation-email/', SendEmailConfirmationTokenAPIView.as_view(), name='send-confirmation-email'),
+    path('confirm-email/', ConfirmEmailView.as_view(), name='confirm-email'),
     
 ]
 
