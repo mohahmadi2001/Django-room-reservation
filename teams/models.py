@@ -19,5 +19,69 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
+    
+    #create a new team
+    @classmethod
+    def create_team(cls, name, members=None):
+        """
+        Create a new team with the given name and members.
+
+        Args:
+            name (str): The name of the team.
+            members (list of CustomUser, optional): List of team members (CustomUser objects).
+
+        Returns:
+            Team: The newly created Team object.
+        """
+        team = cls(name=name)
+        team.save()
+        if members:
+            team.members.add(*members)
+        return team
+
+    #get all teams
+    @classmethod
+    def get_all_teams(cls):
+        """
+        Retrieve a list of all teams.
+
+        Returns:
+            QuerySet: A queryset containing all Team objects.
+        """
+        return cls.objects.all()
+    
+    #get all team members
+    def get_team_members(self):
+        """
+        Retrieve a list of members for this team.
+
+        Returns:
+            QuerySet: A queryset containing CustomUser objects (members of the team).
+        """
+        return self.members.all()
+    
+    #update team members
+    @classmethod
+    def update_team(cls, team, name=None, members=None):
+        """
+        Update the attributes of a team.
+
+        Args:
+            team (Team): The team object to be updated.
+            name (str, optional): The new name for the team.
+            members (list of CustomUser, optional): List of team members (CustomUser objects).
+
+        Returns:
+            Team: The updated Team object.
+        """
+        if name:
+            team.name = name
+        if members is not None:
+            team.members.clear()
+            team.members.add(*members)
+        team.save()
+        return team
+
+
 
 
