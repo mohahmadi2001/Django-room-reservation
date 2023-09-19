@@ -70,3 +70,15 @@ class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
     confirm_new_password = serializers.CharField(required=True)
+    
+
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("username","first_name","last_name","email")
+    
+    def update(self, instance, validated_data):
+        if 'email' in validated_data and instance.email != validated_data['email']:
+            instance.is_email_confirmed = False
+        return super().update(instance, validated_data)
+        

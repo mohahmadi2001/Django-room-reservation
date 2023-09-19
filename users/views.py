@@ -1,11 +1,13 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView,UpdateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.shortcuts import redirect
 from .serializers import (
     UserRegistrationSerializer,
     UserInformationSerializer,
-    ChangePasswordSerializer
+    ChangePasswordSerializer,
+    UpdateProfileSerializer
 )
 from rest_framework.permissions import IsAuthenticated
 from .utils import send_confirmation_email
@@ -86,3 +88,22 @@ class ChangePasswordView(APIView):
             return Response({'message': 'Password changed successfully.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class ProfileUpdateView(UpdateAPIView):
+    serializer_class = UpdateProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        if 'email' in request.data and instance.email != request.data['email']:
+            instance.is_email_confirmed = False
+            return redirect('confirm-email') 
+        return Response(serializer.data)
