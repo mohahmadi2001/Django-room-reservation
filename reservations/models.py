@@ -30,7 +30,8 @@ class Reservation(BaseModel):
         return f"{self.user.username} Reserve for {self.room.name}"
     
     #create a reservation
-    def create_reservation(start_time, end_time, user, room):
+    @classmethod
+    def create_reservation(cls, start_time, end_time, user, room):
         """
         Create a new reservation for a specified time range, user, and room.
 
@@ -43,22 +44,24 @@ class Reservation(BaseModel):
         Returns:
             Reservation: The newly created reservation object.
         """
-        reservation = Reservation(start_time=start_time, end_time=end_time, user=user, room=room)
+        reservation = cls(start_time=start_time, end_time=end_time, user=user, room=room)
         reservation.save()
         return reservation
     
     #get all reservation
-    def get_all_reservations():
+    @classmethod
+    def get_all_reservations(cls):
         """
         Retrieve a list of all reservations.
 
         Returns:
             QuerySet: A queryset containing all reservation objects.
         """
-        return Reservation.objects.all()
+        return cls.objects.all()
     
     #get reservation for user
-    def get_user_reservations(user):
+    @classmethod
+    def get_user_reservations(cls, user):
         """
         Retrieve a list of reservations made by a specific user.
 
@@ -68,10 +71,11 @@ class Reservation(BaseModel):
         Returns:
             QuerySet: A queryset containing reservation objects made by the user.
         """
-        return Reservation.objects.filter(user=user)
+        return cls.objects.filter(user=user)
 
     #get reservation for room
-    def get_room_reservations(room):
+    @classmethod
+    def get_room_reservations(cls, room):
         """
         Retrieve a list of reservations for a specific room.
 
@@ -81,10 +85,10 @@ class Reservation(BaseModel):
         Returns:
             QuerySet: A queryset containing reservation objects for the room.
         """
-        return Reservation.objects.filter(room=room)
-
+        return cls.objects.filter(room=room)
     #update reservation
-    def update_reservation(reservation, start_time=None, end_time=None, user=None, room=None):
+    @classmethod
+    def update_reservation(cls, reservation, start_time=None, end_time=None, user=None, room=None):
         """
         Update the attributes of a reservation.
 
