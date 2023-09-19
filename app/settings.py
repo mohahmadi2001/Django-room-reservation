@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'meetings',
     'reservations',
     'users',
+    'teams',
+    'core',
 ]
 
 MIDDLEWARE = [

@@ -1,14 +1,15 @@
 from django.db import models
+from core.models import BaseModel
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import User
+
 
 # Create your models here.
 
-class Reservation(models.Model):
+class Reservation(BaseModel):
     start_time = models.DateTimeField(_("start time"))
     end_time = models.DateTimeField(_("end time"))
     user = models.ForeignKey(
-        User,
+        "users.CustomUser",
         verbose_name=_("user"),
         on_delete=models.CASCADE,
         related_name="user_reservations"        
