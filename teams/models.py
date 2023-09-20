@@ -83,5 +83,18 @@ class Team(models.Model):
         return team
 
 
+class TeamManager(models.Model):
+    team = models.OneToOneField(
+        Team,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        related_name='manager'
+    )
+    manager = models.ForeignKey(
+        "users.CustomUser",
+        verbose_name=_("manager"),
+        on_delete=models.CASCADE
+    )
 
-
+    def __str__(self):
+        return f"{self.manager.username} Is Manager of {self.team.name}"
