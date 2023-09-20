@@ -7,7 +7,7 @@ class Team(models.Model):
     name = models.CharField(_("name"), max_length=50)
     members = models.ManyToManyField(
         "users.CustomUser",
-        verbose_name=_("member"),
+        verbose_name=_("members"),
         blank=True,
         related_name="team_members"
     )
@@ -97,4 +97,4 @@ class TeamManager(models.Model):
     )
 
     def __str__(self):
-        return f"{self.manager.username} Is Manager of {self.team.name}"
+        return f"{self.manager.username} Is Manager of {self.team.name} Team"

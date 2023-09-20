@@ -8,11 +8,12 @@ from django.utils.translation import gettext_lazy as _
 class Reservation(BaseModel):
     start_time = models.DateTimeField(_("start time"))
     end_time = models.DateTimeField(_("end time"))
-    user = models.ForeignKey(
-        "users.CustomUser",
-        verbose_name=_("user"),
+    team = models.ForeignKey(
+        "teams.Team",
+        verbose_name=_("team"),
         on_delete=models.CASCADE,
-        related_name="user_reservations"        
+        null=True,
+        related_name="team_reservations"        
     )
     room = models.ForeignKey(
         "meetings.Room",
