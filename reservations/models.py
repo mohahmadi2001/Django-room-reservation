@@ -28,7 +28,7 @@ class Reservation(BaseModel):
         verbose_name_plural = _("Reservations")
 
     def __str__(self):
-        return f"{self.user.username} Reserve for {self.room.name}"
+        return f"{self.team} Reserve for {self.room.name}"
     
     #create a reservation
     @classmethod
@@ -113,3 +113,22 @@ class Reservation(BaseModel):
             reservation.room = room
         reservation.save()
         return reservation
+
+
+    def get_team_name(self):
+        """
+        Get the name of the team associated with this reservation.
+
+        Returns:
+            str or None: The name of the associated team or None if no team is associated.
+        """
+        return self.team.name if self.team else None
+
+    def get_room_name(self):
+        """
+        Get the name of the room associated with this reservation.
+
+        Returns:
+            str or None: The name of the associated room or None if no room is associated.
+        """
+        return self.room.name if self.room else None

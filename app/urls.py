@@ -46,6 +46,9 @@ urlpatterns = [
     #meetings
     path('meeting-room/', include("meetings.urls")),
     
+    #reservation
+    path("reservation/", include("reservations.urls"))
+    
     
     
 ]
