@@ -81,6 +81,19 @@ class Team(models.Model):
             team.members.add(*members)
         team.save()
         return team
+    
+    def is_manager(self, user):
+        """
+        Check if a user is a manager of this team.
+
+        Args:
+            user (CustomUser): The user you want to check for team manager status.
+
+        Returns:
+            bool: True if the user is a team manager, False otherwise.
+        """
+        # Check if there is a TeamManager instance that matches the current team and the specified user.
+        return TeamManager.objects.filter(team=self, manager=user).exists()
 
 
 class TeamManager(models.Model):

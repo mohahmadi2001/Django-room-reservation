@@ -6,8 +6,10 @@ from meetings.models import  RoomSlot, Room
 from teams.models import Team
 from .models import Reservation
 from .serializers import ReservationSerializer
+from .permissions import IsTeamManager
 
 class ReservationView(CreateAPIView):
+    permission_classes = [IsTeamManager]
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
     
