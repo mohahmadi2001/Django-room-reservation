@@ -28,6 +28,11 @@ from users.views import (
     ConfirmEmailView,
 
 )
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 
 
 urlpatterns = [
@@ -47,7 +52,12 @@ urlpatterns = [
     path('meeting-room/', include("meetings.urls")),
     
     #reservation
-    path("reservation/", include("reservations.urls"))
+    path("reservation/", include("reservations.urls")),
+    
+    #swagger
+    path("schema/", SpectacularAPIView.as_view(api_version="v1"), name="schema"),
+    path("swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+    path("redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     
     
     
