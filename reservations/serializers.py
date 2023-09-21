@@ -9,3 +9,8 @@ class ReservationSerializer(serializers.ModelSerializer):
         model = Reservation
         exclude = ("is_deleted","created_at","updated_at")
         
+
+class DeleteReservationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservation
+        fields = '__all__' 

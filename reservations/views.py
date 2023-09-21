@@ -5,8 +5,9 @@ from rest_framework.views import APIView
 from meetings.models import  RoomSlot, Room
 from teams.models import Team
 from .models import Reservation
-from .serializers import ReservationSerializer
+from .serializers import ReservationSerializer,DeleteReservationSerializer
 from .permissions import IsTeamManager
+from rest_framework import generics, permissions
 
 class ReservationView(CreateAPIView):
     permission_classes = [IsTeamManager]
@@ -28,3 +29,14 @@ class ReservationView(CreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReservationDeleteView(generics.DestroyAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = DeleteReservationSerializer  
+    permission_classes = [permissions.IsAdminUser]
+
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.delete()
+        return Response({"message": "Reservation deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
