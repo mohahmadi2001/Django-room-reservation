@@ -54,6 +54,9 @@ urlpatterns = [
     #reservation
     path("reservation/", include("reservations.urls")),
     
+    #team
+    path("team/", include("teams.urls")),
+    
     #swagger
     path("schema/", SpectacularAPIView.as_view(api_version="v1"), name="schema"),
     path("swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),

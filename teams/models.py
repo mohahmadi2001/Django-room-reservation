@@ -5,12 +5,20 @@ from core.models import AbstractBaseModel
 # Create your models here.
 
 class Team(AbstractBaseModel):
-    name = models.CharField(_("name"), max_length=50)
+    name = models.CharField(_("name"), max_length=50,unique=True)
     members = models.ManyToManyField(
         "users.CustomUser",
         verbose_name=_("members"),
         blank=True,
         related_name="team_members"
+    )
+    manager = models.ForeignKey(
+        "users.CustomUser",
+        verbose_name=_("manager"),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="team_manager"
     )
     
 
@@ -102,7 +110,7 @@ class TeamManager(models.Model):
         Team,
         on_delete=models.CASCADE,
         primary_key=True,
-        related_name='manager'
+        related_name='team_manager'
     )
     manager = models.ForeignKey(
         "users.CustomUser",
