@@ -8,7 +8,7 @@ def send_confirmation_email(user):
 
     subject = 'Email Confirmation'
     message = f'Please confirm your registration by visiting the following link:\n\n{confirmation_url}'
-    from_email = 'admin@ourapp.com'
+    from_email = 'admin@reservationapp.com'
     recipient_list = [user.email]
 
     send_mail(subject, message, from_email, recipient_list, fail_silently=True)

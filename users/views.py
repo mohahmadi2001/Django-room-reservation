@@ -10,7 +10,7 @@ from .serializers import (
     UpdateProfileSerializer
 )
 from rest_framework.permissions import IsAuthenticated
-from .utils import send_confirmation_email
+from utils.confirmation_email_utils import send_confirmation_email
 from rest_framework_simplejwt.tokens import AccessToken
 from django.contrib.auth import get_user_model
 
