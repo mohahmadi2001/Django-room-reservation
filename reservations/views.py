@@ -6,11 +6,11 @@ from .serializers import ReservationSerializer,DeleteReservationSerializer
 from .permissions import IsTeamManager
 from rest_framework import generics, permissions
 from utils.reminder_email_utils import send_reminder_email
-
+from meetings.signals import delete_related_room_slots
 
 
 class ReservationView(CreateAPIView):
-    permission_classes = [IsTeamManager]
+    # permission_classes = [IsTeamManager]
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
     
@@ -43,5 +43,6 @@ class ReservationDeleteView(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         instance = self.get_object()
+        delete_related_room_slots(sender=Reservation, instance=instance)
         instance.delete()
         return Response({"message": "Reservation deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
