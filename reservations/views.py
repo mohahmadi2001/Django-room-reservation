@@ -10,7 +10,7 @@ from meetings.signals import delete_related_room_slots
 
 
 class ReservationView(CreateAPIView):
-    # permission_classes = [IsTeamManager]
+    permission_classes = [IsTeamManager]
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
     

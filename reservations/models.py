@@ -30,26 +30,7 @@ class Reservation(BaseModel):
     def __str__(self):
         return f"{self.team} Reserve for {self.room.name}"
     
-    #create a reservation
-    @classmethod
-    def create_reservation(cls, start_time, end_time, user, room):
-        """
-        Create a new reservation for a specified time range, user, and room.
-
-        Args:
-            start_time (datetime): The start time of the reservation.
-            end_time (datetime): The end time of the reservation.
-            user (CustomUser): The user making the reservation.
-            room (Room): The room being reserved.
-
-        Returns:
-            Reservation: The newly created reservation object.
-        """
-        reservation = cls(start_time=start_time, end_time=end_time, user=user, room=room)
-        reservation.save()
-        return reservation
     
-    #get all reservation
     @classmethod
     def get_all_reservations(cls):
         """
@@ -60,19 +41,6 @@ class Reservation(BaseModel):
         """
         return cls.objects.all()
     
-    #get reservation for user
-    @classmethod
-    def get_user_reservations(cls, user):
-        """
-        Retrieve a list of reservations made by a specific user.
-
-        Args:
-            user (CustomUser): The user whose reservations are to be retrieved.
-
-        Returns:
-            QuerySet: A queryset containing reservation objects made by the user.
-        """
-        return cls.objects.filter(user=user)
 
     #get reservation for room
     @classmethod
@@ -87,32 +55,7 @@ class Reservation(BaseModel):
             QuerySet: A queryset containing reservation objects for the room.
         """
         return cls.objects.filter(room=room)
-    #update reservation
-    @classmethod
-    def update_reservation(cls, reservation, start_time=None, end_time=None, user=None, room=None):
-        """
-        Update the attributes of a reservation.
-
-        Args:
-            reservation (Reservation): The reservation object to be updated.
-            start_time (datetime, optional): The new start time for the reservation.
-            end_time (datetime, optional): The new end time for the reservation.
-            user (CustomUser, optional): The new user for the reservation.
-            room (Room, optional): The new room for the reservation.
-
-        Returns:
-            Reservation: The updated reservation object.
-        """
-        if start_time:
-            reservation.start_time = start_time
-        if end_time:
-            reservation.end_time = end_time
-        if user:
-            reservation.user = user
-        if room:
-            reservation.room = room
-        reservation.save()
-        return reservation
+    
 
 
     def get_team_name(self):
