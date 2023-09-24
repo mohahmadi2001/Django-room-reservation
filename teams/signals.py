@@ -17,6 +17,9 @@ def update_user_team_names(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=TeamManager)
 def set_user_as_team_manager(sender, instance, created, **kwargs):
+    """
+    A Signal handler to set a user as a team manager when a TeamManager instance is created.
+    """
     if created:
         instance.manager.is_team_manager = True
         instance.manager.save()

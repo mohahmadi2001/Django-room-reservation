@@ -3,11 +3,28 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .serializers import TeamSerializer
 from rest_framework import permissions
-from users.models import CustomUser
 from django.db import IntegrityError 
 
 
 class TeamCreateView(viewsets.ModelViewSet):
+    """
+    A view for creating teams.
+
+    This view allows administrators to create teams. When a team is created, it also assigns a manager to the team and adds team members. It ensures that a user cannot be a member of more than one team.
+
+    - `POST`: Create a new team.
+
+    Permissions:
+    - `IsAdminUser`: Only administrators can create teams.
+
+    Serializer:
+    - `TeamSerializer`: Serializer for team data.
+
+    HTTP Status Codes:
+    - 201 Created: Team created successfully.
+    - 400 Bad Request: Invalid data or user already a member of another team.
+
+    """
     permission_classes = [permissions.IsAdminUser]
     queryset = Team.objects.all()
     serializer_class = TeamSerializer

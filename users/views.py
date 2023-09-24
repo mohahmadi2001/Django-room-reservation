@@ -17,6 +17,24 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class UserRegistrationView(CreateAPIView):
+    """
+    User Registration View.
+
+    This view allows users to register by providing their registration information. Upon successful registration, an email confirmation link is sent to the user's email address.
+
+    - `POST`: Register a new user.
+
+    Serializer:
+    - `UserRegistrationSerializer`: Serializer for user registration data.
+
+    Permissions:
+    - None
+
+    HTTP Status Codes:
+    - 201 Created: Registration successful.
+    - 400 Bad Request: Invalid data.
+
+    """
     serializer_class = UserRegistrationSerializer
 
     def create(self, request):
@@ -29,6 +47,20 @@ class UserRegistrationView(CreateAPIView):
 
 
 class UserProfileView(APIView):
+    """
+    User Profile View.
+
+    This view allows authenticated users to retrieve their profile information.
+
+    - `GET`: Retrieve the user's profile information.
+
+    Permissions:
+    - `IsAuthenticated`: Only authenticated users can access their profile.
+
+    HTTP Status Codes:
+    - 200 OK: Profile information retrieved successfully.
+
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -39,6 +71,20 @@ class UserProfileView(APIView):
     
 
 class SendEmailConfirmationTokenAPIView(APIView):
+    """
+    Send Email Confirmation Token View.
+
+    This view allows users to request a new email confirmation token to be sent to their email address.
+
+    - `POST`: Send a new email confirmation token.
+
+    Permissions:
+    - None
+
+    HTTP Status Codes:
+    - 200 OK: Email confirmation token sent successfully.
+
+    """
     def post(self, request):
         user = request.user  
         send_confirmation_email(user)
@@ -47,6 +93,21 @@ class SendEmailConfirmationTokenAPIView(APIView):
     
 
 class ConfirmEmailView(APIView):
+    """
+    Confirm Email View.
+
+    This view allows users to confirm their email address using a confirmation token.
+
+    - `GET`: Confirm the email address using a token.
+
+    Permissions:
+    - None
+
+    HTTP Status Codes:
+    - 200 OK: Email address successfully confirmed.
+    - 400 Bad Request: Invalid confirmation token.
+
+    """
 
     def get(self, request):
         token = request.GET.get('token', None)
@@ -64,6 +125,21 @@ class ConfirmEmailView(APIView):
 
 
 class ChangePasswordView(APIView):
+    """
+    Change Password View.
+
+    This view allows authenticated users to change their password.
+
+    - `PUT`: Change the user's password.
+
+    Permissions:
+    - `IsAuthenticated`: Only authenticated users can change their password.
+
+    HTTP Status Codes:
+    - 200 OK: Password changed successfully.
+    - 400 Bad Request: Invalid data or old password incorrect.
+
+    """
     permission_classes = [IsAuthenticated]
 
     def put(self, request, *args, **kwargs):
@@ -91,6 +167,20 @@ class ChangePasswordView(APIView):
         
 
 class ProfileUpdateView(UpdateAPIView):
+    """
+    Profile Update View.
+
+    This view allows authenticated users to update their profile information.
+
+    - `PUT`: Update the user's profile.
+
+    Permissions:
+    - `IsAuthenticated`: Only authenticated users can update their profile.
+
+    HTTP Status Codes:
+    - 200 OK: Profile updated successfully.
+
+    """
     serializer_class = UpdateProfileSerializer
     permission_classes = [IsAuthenticated]
 

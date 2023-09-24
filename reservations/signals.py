@@ -5,6 +5,9 @@ from meetings.models import RoomSlot
 
 @receiver(post_save, sender=Reservation)
 def create_room_slot(sender, instance, created, **kwargs):
+    """    
+    A Signal handler to create a room slot when a reservation is created.
+    """
     if created:
         RoomSlot.objects.create(
             room=instance.room,
