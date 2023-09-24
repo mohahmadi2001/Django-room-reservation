@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from core.models import BaseModel
 from django.utils.translation import gettext_lazy as _
@@ -21,8 +22,8 @@ class Room(BaseModel):
        
 class RoomSlot(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name=_("room"))
-    start_time = models.DateTimeField(_("start time"))
-    end_time = models.DateTimeField(_("end time"))
+    start_time = models.DateTimeField(_("start time"), default=datetime.now)
+    end_time = models.DateTimeField(_("end time"), default=datetime.now)
     is_empty = models.BooleanField(_("is empty"), default=True)
 
     class Meta:
@@ -33,7 +34,7 @@ class RoomSlot(models.Model):
         return f"{self.room.name} - {self.start_time} to {self.end_time}"
 
     
-    #get room status in time range
+    
     @classmethod
     def get_room_status_in_time_range(cls, room, start_time, end_time):
         """
@@ -50,26 +51,6 @@ class RoomSlot(models.Model):
         room_slot = cls.objects.get(room=room, start_time=start_time, end_time=end_time)
         return room_slot.is_empty
     
-    
-    def update_room_status_in_time_range(cls, room, start_time, end_time):
-        """
-        Update the status of the room for a specified time range.
-
-        Args:
-            room (Room): The room for which the status is updated.
-            start_time (datetime): The start time of the time range.
-            end_time (datetime): The end time of the time range.
-
-        Returns:
-            bool: True if the room status was updated successfully, False otherwise.
-        """
-        try:
-            room_slot = cls.objects.get(room=room, start_time=start_time, end_time=end_time)
-            room_slot.is_empty = False  
-            room_slot.save()
-            return True
-        except cls.DoesNotExist:
-            return False
   
     def get_start_time(self):
         """
