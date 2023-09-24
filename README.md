@@ -42,9 +42,9 @@
 - Python 3.x
 - Django 4.2.5
 - Django REST Framework 3.14.0
-- djangorestframework-simplejwt==5.3.0
-- drf-spectacular==0.26.4
-- python-dotenv==1.0.0
+- simplejwt 5.3.0
+- spectacular 0.26.4
+- dotenv 1.0.0
 
 ## Installation
 
