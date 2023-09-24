@@ -31,7 +31,7 @@
 ├── core               # Core functionalities
 ├── meetings           # meeting management
 ├── reservations       # reservation management
-├── team               # team management
+├── teams               # team management
 ├── app                # Project settings
 ├── manage.py          # Django management script
 └── requirements       # Project dependencies
