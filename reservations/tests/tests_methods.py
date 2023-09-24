@@ -1,3 +1,4 @@
+import unittest
 from django.test import TestCase
 from teams.models import Team
 from meetings.models import Room
@@ -34,3 +35,6 @@ class ReservationModelTest(TestCase):
     def test_get_room_name(self):
         room_name = self.reservation.get_room_name()
         self.assertEqual(room_name, "Test Room")
+
+if __name__ == '__main__':
+    unittest.main()

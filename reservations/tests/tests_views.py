@@ -1,9 +1,9 @@
+import unittest
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 from reservations.models import Reservation
-from reservations.serializers import ReservationSerializer, DeleteReservationSerializer
 from teams.models import Team
 from meetings.models import Room
 from django.utils import timezone
@@ -33,7 +33,6 @@ class ReservationViewTest(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
         response = self.client.post(url, self.reservation_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
         
 class ReservationDeleteViewTest(TestCase):
     def setUp(self):
@@ -58,3 +57,6 @@ class ReservationDeleteViewTest(TestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertTrue(Reservation.objects.filter(id=self.reservation.id).exists())
+
+if __name__ == '__main__':
+    unittest.main()
