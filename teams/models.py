@@ -29,26 +29,7 @@ class Team(AbstractBaseModel):
     def __str__(self):
         return self.name
     
-    #create a new team
-    @classmethod
-    def create_team(cls, name, members=None):
-        """
-        Create a new team with the given name and members.
-
-        Args:
-            name (str): The name of the team.
-            members (list of CustomUser, optional): List of team members (CustomUser objects).
-
-        Returns:
-            Team: The newly created Team object.
-        """
-        team = cls(name=name)
-        team.save()
-        if members:
-            team.members.add(*members)
-        return team
-
-    #get all teams
+    
     @classmethod
     def get_all_teams(cls):
         """
@@ -59,7 +40,6 @@ class Team(AbstractBaseModel):
         """
         return cls.objects.all()
     
-    #get all team members
     def get_team_members(self):
         """
         Retrieve a list of members for this team.
@@ -69,40 +49,6 @@ class Team(AbstractBaseModel):
         """
         return self.members.all()
     
-    #update team members
-    @classmethod
-    def update_team(cls, team, name=None, members=None):
-        """
-        Update the attributes of a team.
-
-        Args:
-            team (Team): The team object to be updated.
-            name (str, optional): The new name for the team.
-            members (list of CustomUser, optional): List of team members (CustomUser objects).
-
-        Returns:
-            Team: The updated Team object.
-        """
-        if name:
-            team.name = name
-        if members is not None:
-            team.members.clear()
-            team.members.add(*members)
-        team.save()
-        return team
-    
-    def is_manager(self, user):
-        """
-        Check if a user is a manager of this team.
-
-        Args:
-            user (CustomUser): The user you want to check for team manager status.
-
-        Returns:
-            bool: True if the user is a team manager, False otherwise.
-        """
-        # Check if there is a TeamManager instance that matches the current team and the specified user.
-        return TeamManager.objects.filter(team=self, manager=user).exists()
 
 
 class TeamManager(models.Model):
