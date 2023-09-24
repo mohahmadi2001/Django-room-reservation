@@ -11,5 +11,5 @@ class IsTeamManager(permissions.BasePermission):
             request.user
             and request.user.is_authenticated
             and request.user.team
-            and request.user.team.is_manager(request.user)
+            and request.user.is_team_manager
         )
