@@ -15,7 +15,6 @@ class ReservationViewTest(TestCase):
         self.client = APIClient()
         self.user = CustomUser.objects.create_user(username='testuser', password='testpassword')
 
-        # ایجاد توکن JWT
         refresh = RefreshToken.for_user(self.user)
         self.access_token = str(refresh.access_token)
 

@@ -32,7 +32,6 @@ class TeamCreateViewTestCase(TestCase):
         self.assertEqual(self.non_admin_user.team, Team.objects.first())
 
     def test_create_team_with_existing_member(self):
-        # تست برای ایجاد تیم با کاربری که عضو تیم دیگری است
         existing_team = Team.objects.create(name='Existing Team')
         self.non_admin_user.team = existing_team
         self.non_admin_user.save()
