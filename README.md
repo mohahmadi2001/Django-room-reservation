@@ -23,6 +23,9 @@
 - **Sending Reminder Emails to Meeting Participants**:
         The software should have the ability to send reminder emails to meeting participants to ensure their attendance.
 
+## Photos:
+![ERD](/reservation-room-class-digram.png)
+
 ## Project Structure
 
 ```
