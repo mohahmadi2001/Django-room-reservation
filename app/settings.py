@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'users',
     'teams',
     'core',
+    'chat',
 ]
 
 MIDDLEWARE = [
