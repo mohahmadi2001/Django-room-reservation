@@ -47,7 +47,7 @@ class TeamCreateView(viewsets.ModelViewSet):
             TeamManager.objects.create(team=team, manager=manager)
             
             
-            if team and manager:
+            if team:
                 members = team.members.all()
                 for member in members:
                     member.team = team
