@@ -1,6 +1,5 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView
 from .models import Reservation
 from .serializers import ReservationSerializer,DeleteReservationSerializer
 from .permissions import IsTeamManager
@@ -9,7 +8,7 @@ from utils.reminder_email_utils import send_reminder_email
 from meetings.signals import delete_related_room_slots
 
 
-class ReservationView(CreateAPIView):
+class ReservationView(generics.CreateAPIView):
     """
     A view for creating reservations.
 
